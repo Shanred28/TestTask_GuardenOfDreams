@@ -47,7 +47,7 @@ namespace CodeBase.Entity.Character.Enemy
             _currentState.Execute();
         }
         
-        public void TakeDamage(int damage) => _enemyHealthController.TakeDamage(damage);
+        public void TakeDamage(int takeDamage) => _enemyHealthController.TakeDamage(takeDamage);
         public void ChangeState(EnemyState newState)
         {
             _currentState?.Exit();

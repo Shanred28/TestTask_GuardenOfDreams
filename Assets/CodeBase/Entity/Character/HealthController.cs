@@ -38,7 +38,7 @@ namespace CodeBase.Entity.Character
 
         public void Exit()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

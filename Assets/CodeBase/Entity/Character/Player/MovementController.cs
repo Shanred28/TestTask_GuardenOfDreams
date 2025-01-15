@@ -39,7 +39,12 @@ namespace CodeBase.Entity.Character.Player
             _movement.x = _joystick.Horizontal;
             _movement.y = _joystick.Vertical;
             
-            SpriteFlipX();
+            MoveSpriteFlipX();
+        }
+
+        public void FireSpriteFlipX()
+        {
+            
         }
 
         private void FixedUpdateMove()
@@ -47,7 +52,7 @@ namespace CodeBase.Entity.Character.Player
             _rigidbody.MovePosition(_rigidbody.position + _movement *  _moveSpeed * Time.fixedDeltaTime );
         }
 
-        private void SpriteFlipX()
+        private void MoveSpriteFlipX()
         {
             switch (_movement.x)
             {

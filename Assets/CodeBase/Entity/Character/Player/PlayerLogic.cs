@@ -23,10 +23,30 @@ namespace CodeBase.Entity.Character.Player
         public Transform GetTarget() => _targetEnemy;
         private readonly List<Transform> _enemiesInRange = new List<Transform>();
         private Transform _targetEnemy;
-        
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if(other.CompareTag("Enemy"))
+            {
+                _enemiesInRange.Add(other.transform);
+                UpdateTargetEnemy();
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                _enemiesInRange.Remove(other.transform);
+                UpdateTargetEnemy();
+            }
+        }
+
         private void OnDestroy()
         {
             _movementController.Exit();
+            _playerHealthController.Exit();
+            _playerAttack.Exit();
         }
 
         public void Initialization(Joystick joystick, int maxHP, float moveSpeed,UI_HealthBar healthBar,PlayerInventory inventory,Button fireButton)
@@ -45,40 +65,23 @@ namespace CodeBase.Entity.Character.Player
         }
 
         public void TakeDamage(int damage) => _playerHealthController.TakeDamage(damage);
+
         public void PickupItem(ItemSO item)
         {
             _playerInventory.AddItem(item);
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if(other.CompareTag("Enemy"))
-            {
-                _enemiesInRange.Add(other.transform);
-                UpdateTargetEnemy();
-                _fireButton.interactable = true;
-                _fireButton.interactable = _targetEnemy != null;
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (other.CompareTag("Enemy"))
-            {
-                _enemiesInRange.Remove(other.transform);
-                UpdateTargetEnemy();
-                _fireButton.interactable = _targetEnemy != null;
-            }
-        }
-        
         private void UpdateTargetEnemy() 
         {
             if (_enemiesInRange.Count == 0)
             {
                 _targetEnemy = null; 
+                FireButtonInteractable();
                 return;
             } 
-            _targetEnemy = GetClosestEnemy(); 
+            
+            _targetEnemy = GetClosestEnemy();
+            FireButtonInteractable();
         }
 
         private Transform GetClosestEnemy()
@@ -96,6 +99,11 @@ namespace CodeBase.Entity.Character.Player
             }
 
             return closestEnemy;
+        }
+
+        private void FireButtonInteractable()
+        {
+            _fireButton.interactable = _targetEnemy != null;
         }
     }
 }

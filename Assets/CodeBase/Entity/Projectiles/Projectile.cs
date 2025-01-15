@@ -39,25 +39,18 @@ namespace CodeBase.Entity.Projectiles
         {
             if(_target == null) return;
             
-            float distance = Vector3.Distance(transform.position, _target.transform.position);
-
-            if (distance > maxDistance)
-            {
-                distance = maxDistance; 
-                _target.position = _startPosition + (_target.position - _startPosition).normalized * maxDistance;
-            }
+            Vector3 direction = (_target.transform.position - transform.position).normalized; 
+            Vector3 targetPosition = transform.position + direction * maxDistance; 
+            float distance = Vector3.Distance(transform.position, targetPosition);
             
-            
-            float duration = distance / speed;
-            
-            _tween = transform.DOMove(_target.transform.position, duration).SetEase(Ease.Linear) .OnComplete(() => DestroyProjectile());
+            float duration = distance / speed; _tween = transform.DOMove(targetPosition, duration).SetEase(Ease.Linear) .OnComplete(() => DestroyProjectile());
         }
 
         private void TakeDamage(Enemy enemy)
         {
             enemy.TakeDamage(damage);
             _target = null;
-            _tween.Kill();
+            _tween?.Kill();
             DestroyProjectile();
         }
 
