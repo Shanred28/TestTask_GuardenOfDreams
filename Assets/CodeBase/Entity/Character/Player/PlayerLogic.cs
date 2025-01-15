@@ -1,4 +1,5 @@
 using System;
+using CodeBase.Common;
 using CodeBase.Entity.InventorySystem;
 using CodeBase.Entity.InventorySystem.Items;
 using CodeBase.Entity.Projectiles;
@@ -25,7 +26,7 @@ namespace CodeBase.Entity.Character.Player
         
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if(other.CompareTag("Enemy"))
+            if(other.CompareTag(TagLayerNameHolder.TAG_ENEMY))
             {
                 OnEnemyNears?.Invoke(other.transform);
             }
@@ -33,7 +34,7 @@ namespace CodeBase.Entity.Character.Player
 
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (other.CompareTag("Enemy"))
+            if (other.CompareTag(TagLayerNameHolder.TAG_ENEMY))
             {
                 OnEnemyNears?.Invoke(other.transform);
             }

@@ -10,8 +10,9 @@ namespace CodeBase.Entity.Character.Enemy
 {
     public class Enemy : MonoBehaviour
     {
-        
         public Action<bool> OnLookRight;
+        
+        private static readonly int Hit = Animator.StringToHash("Hit");
         
         [SerializeField] private int maxHP;
         [SerializeField] private float distanceSight;
@@ -93,7 +94,7 @@ namespace CodeBase.Entity.Character.Enemy
             _disposableIntervalAttack = Observable.Interval(TimeSpan.FromSeconds(intervalAttack) )
                 .Subscribe(_ => 
                 {
-                    animator.SetTrigger("Hit");
+                    animator.SetTrigger(Hit);
                     _player.GetComponent<PlayerLogic>().TakeDamage(damage);
                 }).AddTo(this);
         }
@@ -101,13 +102,15 @@ namespace CodeBase.Entity.Character.Enemy
         private void CheckFlipSprite(float moveX)
         {
             if ((!_isRightMoving || !(moveX < 0)) && (_isRightMoving || !(moveX > 0))) return;
-
-            _isRightMoving = moveX > 0;
+            
+            _isRightMoving = moveX > 0; 
             OnLookRight?.Invoke(_isRightMoving);
         }
+        
 
         public void Die()
         {
+            _enemyAnimation.Exit();
             _currentState.Exit();
             _disposable.Dispose();
             _disposableIntervalAttack?.Dispose();

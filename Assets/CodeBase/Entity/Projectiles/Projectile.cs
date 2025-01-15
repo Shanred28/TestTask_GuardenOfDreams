@@ -1,3 +1,4 @@
+using CodeBase.Common;
 using CodeBase.Entity.Character.Enemy;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -9,27 +10,23 @@ namespace CodeBase.Entity.Projectiles
 {
     public class Projectile : MonoBehaviour
     {
-        private const string ENEMY_TAG = "Enemy";
-        
         [SerializeField] private float speed;
         [SerializeField] private float maxDistance;
         [SerializeField] private int damage;
         
         private Transform _target;
-        private Vector3 _startPosition;
         
         private TweenerCore<Vector3, Vector3, VectorOptions> _tween;
         
         public void Init(Transform target)
         {
             _target = target;
-            _startPosition = transform.position;
             Move();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if( other.CompareTag(ENEMY_TAG))
+            if( other.CompareTag(TagLayerNameHolder.TAG_ENEMY))
             {
                 TakeDamage(other.transform.root.GetComponent<Enemy>());
             }
