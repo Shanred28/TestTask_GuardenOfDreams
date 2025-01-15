@@ -390,12 +390,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 20
   distanceSight: 10
-  attackRange: 1
+  attackRange: 1.2
   moveSpeed: 2
+  stopDistance: 1
   healthBar: {fileID: 9085753446929102898}
   animator: {fileID: 4905174945615130981}
   damage: 5
   intervalAttack: 2
+  spritesRenderer:
+  - {fileID: 4905174945615130980}
   itemSo: {fileID: 11400000, guid: 3958756b16618b845be216bc30f531a3, type: 2}
 --- !u!50 &7452177610722538550
 Rigidbody2D:
@@ -516,6 +519,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9085753447514828108}
     m_Modifications:
+    - target: {fileID: 8799519768697995557, guid: ac5c0cd8bac8fca49b1f9e9b5103c344, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8799519768697995558, guid: ac5c0cd8bac8fca49b1f9e9b5103c344, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -570,6 +577,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac5c0cd8bac8fca49b1f9e9b5103c344, type: 3}
+--- !u!212 &4905174945615130980 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8799519768697995557, guid: ac5c0cd8bac8fca49b1f9e9b5103c344, type: 3}
+  m_PrefabInstance: {fileID: 4471091484934582337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &4905174945615130981 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8799519768697995556, guid: ac5c0cd8bac8fca49b1f9e9b5103c344, type: 3}

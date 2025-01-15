@@ -390,12 +390,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHP: 20
   distanceSight: 10
-  attackRange: 1
+  attackRange: 1.2
   moveSpeed: 2
+  stopDistance: 1
   healthBar: {fileID: 6169562002853087357}
   animator: {fileID: 334416714708921037}
   damage: 6
   intervalAttack: 1
+  spritesRenderer:
+  - {fileID: 334416714708921036}
   itemSo: {fileID: 11400000, guid: 3958756b16618b845be216bc30f531a3, type: 2}
 --- !u!50 &43297283656989463
 Rigidbody2D:
@@ -604,6 +607,11 @@ BoxCollider2D:
 --- !u!4 &334416714708921035 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5853194963767908104, guid: 9bf03320c4797a34a84a5d3db0044447, type: 3}
+  m_PrefabInstance: {fileID: 6169562002979061187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &334416714708921036 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 5853194963767908111, guid: 9bf03320c4797a34a84a5d3db0044447, type: 3}
   m_PrefabInstance: {fileID: 6169562002979061187}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &334416714708921037 stripped
