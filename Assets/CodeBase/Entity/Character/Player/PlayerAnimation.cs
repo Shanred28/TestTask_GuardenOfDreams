@@ -8,6 +8,7 @@ namespace CodeBase.Entity.Character.Player
     public class PlayerAnimation : ILogic
     {
         private static readonly int IsMove = Animator.StringToHash("IsMove");
+        private const float Interval = 0.5f;
 
         private readonly Animator _animator;
         private readonly SpriteRenderer[] _spritesRenderer;
@@ -16,8 +17,7 @@ namespace CodeBase.Entity.Character.Player
 
         private bool _isEnemyNearest;
         private IDisposable _disposableInterval;
-        private readonly float _interval = 0.5f;
-
+        
         public PlayerAnimation(Animator animator, MovementController movement, SpriteRenderer[] spritesRenderer,
             Transform playerTransform)
         {
@@ -37,7 +37,10 @@ namespace CodeBase.Entity.Character.Player
         {
             _isEnemyNearest = enemy;
             _disposableInterval?.Dispose();
-            _disposableInterval = Observable.Interval(TimeSpan.FromSeconds(_interval)).Subscribe(_ =>
+            
+            if(!enemy) return;
+            
+            _disposableInterval = Observable.Interval(TimeSpan.FromSeconds(Interval)).Subscribe(_ =>
             {
                 foreach (var t in _spritesRenderer)
                 {
