@@ -12,12 +12,14 @@ namespace CodeBase.Entity.Character.Player
         [SerializeField] private SpriteRenderer[] spriteRenderer;
         [SerializeField] private Projectile projectilePrefab;
         [SerializeField] private Transform pointFire;
+        [SerializeField] private Animator animator;
 
         private Joystick _joystick;
         private MovementController _movementController;
         private PlayerHealthController _playerHealthController;
         private PlayerInventory _playerInventory;
         private PlayerAttack _playerAttack;
+        private PlayerAnimation _playerAnimation;
         private Button _fireButton;
 
         public Transform GetTarget() => _targetEnemy;
@@ -53,15 +55,18 @@ namespace CodeBase.Entity.Character.Player
         {
             _joystick = joystick;
             _fireButton = fireButton;
-            _movementController = new MovementController(this,moveSpeed,_joystick,spriteRenderer);
+            _movementController = new MovementController(this,moveSpeed,_joystick);
             _playerHealthController = new PlayerHealthController(maxHP,healthBar);
             _playerInventory = inventory;
             _playerAttack = new PlayerAttack(projectilePrefab,pointFire,_fireButton.onClick, this,_playerInventory);
-            _fireButton.interactable = false;
+            _playerAnimation = new PlayerAnimation(animator,_movementController,spriteRenderer, transform);
             
             _playerHealthController.Enter();
             _movementController.Enter();
             _playerAttack.Enter();
+            _playerAnimation.Enter();
+
+            FireButtonInteractable();
         }
 
         public void TakeDamage(int damage) => _playerHealthController.TakeDamage(damage);
@@ -77,10 +82,12 @@ namespace CodeBase.Entity.Character.Player
             {
                 _targetEnemy = null; 
                 FireButtonInteractable();
+                _playerAnimation.FlipOnEnemy(_targetEnemy);
                 return;
             } 
             
             _targetEnemy = GetClosestEnemy();
+            _playerAnimation.FlipOnEnemy(_targetEnemy);
             FireButtonInteractable();
         }
 
@@ -97,7 +104,7 @@ namespace CodeBase.Entity.Character.Player
                     closestEnemy = enemy;
                 }
             }
-
+            
             return closestEnemy;
         }
 
