@@ -52,8 +52,7 @@ namespace CodeBase.Services.Factory.EntityFactory
                 EnemyConfig config = _configProvider.GetEmyConfig();
 
                 var spawnPoint = _spawnZone.GetRandomPosition();
-                Enemy enemy = LeanPool.Spawn(config.enemyPrefab,spawnPoint,Quaternion.identity);
-                enemy.Initialization(HeroObject.transform);
+                LeanPool.Spawn(config.enemyPrefab,spawnPoint,Quaternion.identity).GetComponent<Enemy>().Initialization(HeroObject.transform);
             }
         }
         

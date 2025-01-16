@@ -3,6 +3,8 @@ using CodeBase.Common;
 using CodeBase.Entity.InventorySystem;
 using CodeBase.Entity.InventorySystem.Items;
 using CodeBase.Entity.Projectiles;
+using Lean.Pool;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +14,14 @@ namespace CodeBase.Entity.Character.Player
     {
         public Action<Transform> OnEnemyNears;
         
+        private static readonly int IsDie = Animator.StringToHash("IsDie");
+        
         [SerializeField] private SpriteRenderer[] spriteRenderer;
         [SerializeField] private Projectile projectilePrefab;
         [SerializeField] private Transform pointFire;
         [SerializeField] private Animator animator;
+        [SerializeField] private float timeDie = 1f;
+        [SerializeField] private GameObject weapon;
 
         private Joystick _joystick;
         private MovementController _movementController;
@@ -24,6 +30,7 @@ namespace CodeBase.Entity.Character.Player
         private PlayerAttack _playerAttack;
         private PlayerAnimation _playerAnimation;
         
+
         private void OnTriggerEnter2D(Collider2D other)
         {
             if(other.CompareTag(TagLayerNameHolder.TAG_ENEMY))
@@ -45,6 +52,7 @@ namespace CodeBase.Entity.Character.Player
             _movementController.Exit();
             _playerHealthController.Exit();
             _playerAttack.Exit();
+            _playerAnimation.Exit();
         }
 
         public void Initialization(Joystick joystick, int maxHP, float moveSpeed,UI_HealthBar healthBar,PlayerInventory inventory,Button fireButton)
@@ -52,6 +60,7 @@ namespace CodeBase.Entity.Character.Player
             _joystick = joystick;
             _movementController = new MovementController(this,moveSpeed,_joystick);
             _playerHealthController = new PlayerHealthController(maxHP,healthBar);
+            _playerHealthController.OnDead +=  Die;
             _playerInventory = inventory;
             _playerAnimation = new PlayerAnimation(animator,_movementController,spriteRenderer, transform);
             _playerAttack = new PlayerAttack(projectilePrefab,pointFire,fireButton, this,_playerInventory, _playerAnimation);
@@ -68,6 +77,18 @@ namespace CodeBase.Entity.Character.Player
         public void PickupItem(ItemSO item)
         {
             _playerInventory.AddItem(item);
+        }
+
+        private void Die()
+        {
+            _playerHealthController.OnDead -=  Die;
+            weapon.SetActive(false);
+            animator.SetBool(IsDie,true);
+
+            Observable.Timer(TimeSpan.FromSeconds(timeDie)).Subscribe(_ =>
+            {
+                LeanPool.Despawn(gameObject);
+            });
         }
     }
 }

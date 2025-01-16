@@ -121,6 +121,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 863033304849144815, guid: 682d2441d73058b478817c43f785c929, type: 3}
   pointFire: {fileID: 3813335873666113372}
   animator: {fileID: 4007232673684948940}
+  timeDie: 1
+  weapon: {fileID: 3588152098521329594}
 --- !u!1 &3588152098521329594
 GameObject:
   m_ObjectHideFlags: 0

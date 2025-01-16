@@ -54,7 +54,7 @@ namespace CodeBase.Entity.Projectiles
         private void DestroyProjectile()
         {
             _target = null;
-            LeanPool.Despawn(this);
+            LeanPool.Despawn(gameObject);
         }
     }
 }
